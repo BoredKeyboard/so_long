@@ -1,0 +1,13 @@
+- Background
+	Texture
+- Walls
+	Texture
+	Collision
+- Exit
+	Texture
+- Key
+	Texture
+
+
+
+mlx_set_instance_depth

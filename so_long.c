@@ -6,30 +6,11 @@
 /*   By: mforstho <mforstho@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/28 15:54:14 by mforstho      #+#    #+#                 */
-/*   Updated: 2022/07/07 16:12:18 by mforstho      ########   odam.nl         */
+/*   Updated: 2022/07/12 16:06:11 by mforstho      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "MLX42/include/MLX42/MLX42.h"
-#include <stdlib.h>
-#include <stdio.h>
-#include <unistd.h>
-#include <memory.h>
-#define WIDTH 256
-#define HEIGHT 256
-
-typedef struct s_player
-{
-	mlx_instance_t	*instance;
-	int				health;
-}	t_player;
-
-typedef struct s_data
-{
-	mlx_t		*mlx;
-	mlx_image_t	*image;
-	t_player	player;
-}	t_data;
+#include "so_long.h"
 
 void	image_hook(mlx_t *mlx, mlx_image_t *image)
 {
@@ -38,20 +19,6 @@ void	image_hook(mlx_t *mlx, mlx_image_t *image)
 	if (mlx_is_key_down(mlx, MLX_KEY_P))
 		mlx_delete_image(mlx, image);
 }
-
-// void	input_hook(mlx_t *mlx, mlx_image_t *image)
-// {
-// 	if (mlx_is_key_down(mlx, MLX_KEY_ESCAPE))
-// 		mlx_close_window(mlx);
-// 	if (mlx_is_key_down(mlx, MLX_KEY_W))
-// 		image->instances[0].y -= 5;
-// 	if (mlx_is_key_down(mlx, MLX_KEY_S))
-// 		image->instances[0].y += 5;
-// 	if (mlx_is_key_down(mlx, MLX_KEY_A))
-// 		image->instances[0].x -= 5;
-// 	if (mlx_is_key_down(mlx, MLX_KEY_D))
-// 		image->instances[0].x += 5;
-// }
 
 void	input_hook(t_data *data)
 {
@@ -88,6 +55,7 @@ int32_t	main(void)
 {
 	mlx_t			*mlx;
 	mlx_texture_t	*texture;
+	mlx_texture_t	*floor;
 	uint32_t		xy[2];
 	uint32_t		wh[2];
 	t_data			data;
@@ -104,6 +72,20 @@ int32_t	main(void)
 	int32_t i = mlx_image_to_window(mlx, data.image, 80, 80);
 	// data.image->instances[i];
 	data.player.instance = &data.image->instances[i];
+	mlx_set_instance_depth(data.player.instance, 1);
+
+	floor = mlx_load_png("dungeonTileset.png");
+	data.background.image = mlx_texture_area_to_image(mlx, floor, (uint32_t[2]){0, 400}, (uint32_t[2]){320, 320});
+	int32_t j = mlx_image_to_window(mlx, data.background.image, 0, 0);
+	// mlx_image_to_window(mlx, data.background.image, 240, 320);
+	data.background.instance = &data.background.image->instances[j];
+	mlx_set_instance_depth(data.background.instance, 0);
+
+	int32_t k = mlx_image_to_window(mlx, data.background.image, 0, 320);
+	// mlx_image_to_window(mlx, data.background.image, 240, 320);
+	data.background.instance = &data.background.image->instances[k];
+	mlx_set_instance_depth(data.background.instance, 0);
+
 	data.mlx = mlx;
 	mlx_loop_hook(mlx, &hook, &data);
 	mlx_loop(mlx);
