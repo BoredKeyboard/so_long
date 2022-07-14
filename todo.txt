@@ -7,7 +7,21 @@
 	Texture
 - Key
 	Texture
-
+- Map
+	0 for an empty space
+	1 for a wall
+	C for a collectible
+	E for a map exit
+	P for the player’s starting position
+	Map moet meegegeven wordan via command line
+	laatste regel van map heeft geen newline dus wordt als error gezien
 
 
 mlx_set_instance_depth
+
+
+
+gcc so_long.c -I include -L MLX42 -l mlx42 -l glfw3 -framework Cocoa -framework OpenGL -framework IOKit && ./a.out
+
+
+

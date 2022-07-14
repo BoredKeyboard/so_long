@@ -6,7 +6,7 @@
 /*   By: mforstho <mforstho@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/07/12 14:02:09 by mforstho      #+#    #+#                 */
-/*   Updated: 2022/07/12 14:13:07 by mforstho      ########   odam.nl         */
+/*   Updated: 2022/07/14 15:35:36 by mforstho      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,15 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <memory.h>
+#include <fcntl.h>
+
+// #include "libft/libft.h"
+#include "src/get_next_line/get_next_line.h"
 
 #ifndef SO_LONG_H
-# define WIDTH 512
-# define HEIGHT 512
+# define WIDTH 800
+# define HEIGHT 800
+# define MAP "src/map/testMap.ber"
 #endif
 
 typedef struct s_player
