@@ -13,7 +13,7 @@
 	C for a collectible
 	E for a map exit
 	P for the player’s starting position
-	Map moet meegegeven wordan via command line
+	Map moet meegegeven worden via command line
 	laatste regel van map heeft geen newline dus wordt als error gezien
 
 

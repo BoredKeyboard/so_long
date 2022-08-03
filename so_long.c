@@ -6,7 +6,7 @@
 /*   By: mforstho <mforstho@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/28 15:54:14 by mforstho      #+#    #+#                 */
-/*   Updated: 2022/07/14 14:33:35 by mforstho      ########   odam.nl         */
+/*   Updated: 2022/08/03 15:35:47 by mforstho      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,13 @@ void	input_hook(t_data *data)	// Player movement
 	if (mlx_is_key_down(mlx, MLX_KEY_ESCAPE))
 		mlx_close_window(mlx);
 	if (mlx_is_key_down(mlx, MLX_KEY_W) || mlx_is_key_down(mlx, MLX_KEY_UP))
-		player->instance->y -= 20;
+		player->instance->y -= 10;
 	if (mlx_is_key_down(mlx, MLX_KEY_S) || mlx_is_key_down(mlx, MLX_KEY_DOWN))
-		player->instance->y += 20;
+		player->instance->y += 10;
 	if (mlx_is_key_down(mlx, MLX_KEY_A) || mlx_is_key_down(mlx, MLX_KEY_LEFT))
-		player->instance->x -= 20;
+		player->instance->x -= 10;
 	if (mlx_is_key_down(mlx, MLX_KEY_D) || mlx_is_key_down(mlx, MLX_KEY_RIGHT))
-		player->instance->x += 20;
+		player->instance->x += 10;
 }
 
 void	hook(void *param)	// Central hook function

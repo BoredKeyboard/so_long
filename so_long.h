@@ -6,7 +6,7 @@
 /*   By: mforstho <mforstho@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/07/12 14:02:09 by mforstho      #+#    #+#                 */
-/*   Updated: 2022/07/14 15:35:36 by mforstho      ########   odam.nl         */
+/*   Updated: 2022/08/03 16:43:28 by mforstho      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include <memory.h>
 #include <fcntl.h>
 
-// #include "libft/libft.h"
+#include "libft/libft.h"
 #include "src/get_next_line/get_next_line.h"
 
 #ifndef SO_LONG_H
