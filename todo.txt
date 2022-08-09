@@ -16,6 +16,9 @@
 	Map moet meegegeven worden via command line
 	laatste regel van map heeft geen newline dus wordt als error gezien
 
+	- Save_map afmaken
+	-
+
 
 mlx_set_instance_depth
 

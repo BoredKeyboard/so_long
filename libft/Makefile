@@ -6,7 +6,7 @@
 #    By: mforstho <mforstho@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/10/12 16:16:58 by mforstho      #+#    #+#                  #
-#    Updated: 2022/05/24 11:55:13 by mforstho      ########   odam.nl          #
+#    Updated: 2022/08/09 16:34:16 by mforstho      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,7 +42,8 @@ LST_SOURCES :=						\
 	src/lst/ft_lstlast_bonus.c		\
 	src/lst/ft_lstmap_bonus.c		\
 	src/lst/ft_lstnew_bonus.c		\
-	src/lst/ft_lstsize_bonus.c
+	src/lst/ft_lstsize_bonus.c		\
+	src/lst/ft_lstnew_back.c
 
 
 MEM_SOURCES :=						\

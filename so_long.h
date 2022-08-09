@@ -6,7 +6,7 @@
 /*   By: mforstho <mforstho@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/07/12 14:02:09 by mforstho      #+#    #+#                 */
-/*   Updated: 2022/08/03 16:43:28 by mforstho      ########   odam.nl         */
+/*   Updated: 2022/08/09 16:37:19 by mforstho      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,4 +44,5 @@ typedef struct s_data
 	mlx_image_t		*image;
 	t_player		player;
 	t_background	background;
+	t_list			*map_lines;
 }	t_data;

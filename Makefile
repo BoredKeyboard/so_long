@@ -6,7 +6,7 @@
 #    By: mforstho <mforstho@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/10/12 16:16:58 by mforstho      #+#    #+#                  #
-#    Updated: 2022/08/03 17:19:07 by mforstho      ########   odam.nl          #
+#    Updated: 2022/08/09 15:52:51 by mforstho      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,9 +15,11 @@
 NAME := so_long
 CC := gcc
 CFLAGS ?= -Wextra -Wall -Werror
+CFLAGS += -fsanitize=address -g
 
 SOURCES :=									\
 	src/map/draw_map.c						\
+	src/map/save_map.c						\
 	src/map/check_map.c						\
 	src/get_next_line/get_next_line.c		\
 	src/get_next_line/get_next_line_utils.c

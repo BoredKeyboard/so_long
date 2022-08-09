@@ -6,7 +6,7 @@
 /*   By: mforstho <mforstho@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/07/14 14:52:07 by mforstho      #+#    #+#                 */
-/*   Updated: 2022/08/03 16:58:12 by mforstho      ########   odam.nl         */
+/*   Updated: 2022/08/09 15:46:50 by mforstho      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,11 +93,27 @@ t_error	get_error(void)
 // 	return (VALID);
 // }
 
-t_status	check_map_test(int map)
+// t_status	save_map(int map)
+// {
+// 	int		i;
+// 	size_t	line_length;
+// 	char	*temp_line;
+// 	char	**saved_map;
+
+// 	i = 0;
+// 	while (line_length != 0)
+// 	{
+// 		temp_line = get_next_line(map);
+// 		saved_map[i] = temp_line;
+// 		line_length = ft_strlen(temp_line);
+// 		i++;
+// 	}
+// }
+
+t_status	check_map_rect(int map)
 {
 	size_t	ln_length;
 	size_t	ln_length_next;
-	char	*line;
 	char	*row;
 
 	printf("Setup:\n");
@@ -111,7 +127,7 @@ t_status	check_map_test(int map)
 	printf("\nLoop:\n");
 	while (ln_length_next != 0)
 	{
-		if (ln_length != -1 && ln_length != ln_length_next)
+		if ((int)ln_length != -1 && ln_length != ln_length_next)
 			return (set_error(NON_RECT_ERROR));
 		ln_length = ln_length_next;
 		row = get_next_line(map);
@@ -124,6 +140,23 @@ t_status	check_map_test(int map)
 	}
 	return (VALID);
 }
+
+// t_status	check_map_edge(int map)
+// {
+//	In de eerste regel checken of alle karakters een 1 zijn
+//	Van de tweede tot een na laatste regel checken of de karakters een 1 zijn
+//	In de laatste regel kijken of alle karakters een 1 zijn
+// }
+
+// t_status	check_map_entities(int map)
+// {
+//	Check of de map een 'C', 'P' en 'E' bevat
+// }
+
+// t_status	check_map_path(int map)
+// {
+
+// }
 
 void	print_err(void)
 {
@@ -138,20 +171,20 @@ void	print_err(void)
 	ft_putendl_fd((char *)jump_table[get_error()], 1);
 }
 
-int	main(void)
-{
-	int	map;
+// int	main(void)
+// {
+// 	int	map;
 
-	// if (check_map_test(map) != VALID)
-	// 	return (get_error());
+// 	// if (check_map_test(map) != VALID)
+// 	// 	return (get_error());
 
-	map = open("src/map/testMap.ber", O_RDONLY);
-	printf("Map: %i\n", map);
-	// printf("result: %i\n", (int)check_map_test(map));
-	if (check_map_test(map) == ERROR)
-		print_err();
-	return (1);
-}
+// 	map = open("src/map/testMap.ber", O_RDONLY);
+// 	printf("Map: %i\n", map);
+// 	// printf("result: %i\n", (int)check_map_test(map));
+// 	if (check_map_test(map) == ERROR)
+// 		print_err();
+// 	return (1);
+// }
 
 
 /*

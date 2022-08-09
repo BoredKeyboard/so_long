@@ -6,7 +6,7 @@
 /*   By: mforstho <mforstho@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/10/07 17:00:30 by mforstho      #+#    #+#                 */
-/*   Updated: 2022/03/08 13:22:02 by mforstho      ########   odam.nl         */
+/*   Updated: 2022/08/09 16:33:35 by mforstho      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,5 +72,6 @@ void			ft_lstiter(t_list *lst, void (*f)(void *));
 t_list			*ft_lstmap(t_list *lst, void *(*f)(void *), void (*d)(void *));
 t_list			*ft_lstnew(void *content);
 int				ft_lstsize(t_list *lst);
+t_list			*ft_lstnew_back(t_list **lst, void *data);
 
 #endif
