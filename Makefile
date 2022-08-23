@@ -6,7 +6,7 @@
 #    By: mforstho <mforstho@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/10/12 16:16:58 by mforstho      #+#    #+#                  #
-#    Updated: 2022/08/09 15:52:51 by mforstho      ########   odam.nl          #
+#    Updated: 2022/08/23 16:42:14 by mforstho      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,10 @@ CFLAGS += -fsanitize=address -g
 SOURCES :=									\
 	src/map/draw_map.c						\
 	src/map/save_map.c						\
-	src/map/check_map.c						\
+	src/map/check_map/check_map.c			\
+	src/map/check_map/check_map_rect.c		\
+	src/map/check_map/check_map_edge.c		\
+	src/map/check_map/check_map_entities.c	\
 	src/get_next_line/get_next_line.c		\
 	src/get_next_line/get_next_line_utils.c
 

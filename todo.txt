@@ -19,6 +19,7 @@
 	- Save_map afmaken
 	-
 
+Errors schrijven als "E_NON_RECT"
 
 mlx_set_instance_depth
 

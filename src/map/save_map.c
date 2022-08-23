@@ -6,23 +6,11 @@
 /*   By: mforstho <mforstho@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/09 15:40:01 by mforstho      #+#    #+#                 */
-/*   Updated: 2022/08/09 16:42:58 by mforstho      ########   odam.nl         */
+/*   Updated: 2022/08/23 17:16:53 by mforstho      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../so_long.h"
-
-typedef enum e_error {
-	NO_ERROR,
-	MALLOC_ERROR,
-	INT_ERROR,
-	NON_RECT_ERROR
-}	t_error;
-
-typedef enum e_status {
-	VALID = 0,
-	ERROR,
-}	t_status;
 
 t_status	save_map(int map, t_data *data)
 {
@@ -35,39 +23,37 @@ t_status	save_map(int map, t_data *data)
 		if (ft_lstnew_back(&data->map_lines, temp_line) == NULL)
 		{
 			ft_lstclear(&data->map_lines, &free);
-			return (ERROR); // set_error(MALLOC_ERROR);
+			return (set_error(MALLOC_ERROR));
 		}
 		printf("%s", ft_lstlast(data->map_lines)->content);
 		temp_line = get_next_line(map);
 	}
-	return (VALID);
+	return (OK);
 }
 
-// typedef struct s_map
-// {
-// 	char			*line;
-// 	struct s_map	*next;
-// }	t_map;
+void	print_err(void)
+{
+	static char	*error_texts[] = {
+	[NO_ERROR] = "NO_ERROR",
+	[MALLOC_ERROR] = "MALLOC_ERROR",
+	[INT_ERROR] = "INT_ERROR",
+	[NON_RECT_ERROR] = "NON_RECT_ERROR",
+	[EDGE_ERROR] = "EDGE_ERROR",
+	[ENTITY_ERROR] = "ENTITY_ERROR",
+	};
 
-// t_status	save_map(int map)
-// {
-// 	int		i;
-// 	size_t	line_length;
-// 	char	*temp_line;
-// 	char	**saved_map;
+	ft_putendl_fd(error_texts[get_error()], 1);
+}
 
-// 	line_length = 1;
-// 	i = 0;
-// 	while (line_length != 0)
-// 	{
-// 		temp_line = get_next_line(map);
-// 		saved_map[i] = temp_line;
-// 		printf("%s", saved_map[i]);
-// 		line_length = ft_strlen(temp_line);
-// 		i++;
-// 	}
-// 	return (VALID);
-// }
+t_status	check_map(t_data *data)
+{
+	if (check_map_rect(data) != OK || check_map_edge(data) != OK
+		|| check_map_entities(data) != OK)
+	{
+		return (ERROR);
+	}
+	return (OK);
+}
 
 int	main(void)
 {
@@ -76,5 +62,11 @@ int	main(void)
 
 	map = open("src/map/testMap.ber", O_RDONLY);
 	save_map(map, &data);
-	printf("%i\n", ft_lstsize(data.map_lines));
+	printf("Lines: %i\n\n", ft_lstsize(data.map_lines));
+	if (check_map(&data) != OK)
+	{
+		print_err();
+		return (EXIT_FAILURE);
+	}
+	return (EXIT_SUCCESS);
 }
