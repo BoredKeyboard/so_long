@@ -6,7 +6,7 @@
 /*   By: mforstho <mforstho@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/28 15:54:14 by mforstho      #+#    #+#                 */
-/*   Updated: 2022/08/24 17:48:57 by mforstho      ########   odam.nl         */
+/*   Updated: 2022/08/25 17:39:32 by mforstho      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,70 +53,86 @@ void	hook(void *param)	// Central hook function
 	input_hook(data);
 }
 
+void	draw_entity(char c, mlx_t *mlx, t_data *data, size_t *pos)
+{
+	static t_draw_function	draw_functions[] = {
+	['1'] = draw_wall,
+	['0'] = draw_floor,
+	['P'] = draw_player,
+	['C'] = draw_collectible,
+	['E'] = draw_exit
+	};
+
+	return (draw_functions[(int)c](mlx, data, pos));
+}
+
+// t_status van maken of int32_t
+int	draw_map_test(mlx_t *mlx, t_data *data)
+{
+	t_list	*map_lines;
+	size_t	pos[2];
+	size_t	line_length;
+	char	*map_line;
+
+	pos[1] = 0;
+	map_lines = data->map_lines;
+	line_length = ft_strlen(map_lines->content);
+	while (map_lines)
+	{
+		map_line = map_lines->content;
+		pos[0] = 0;
+		while (pos[0] != line_length - 1)
+		{
+			draw_entity(map_line[pos[0]], mlx, data, pos);
+			pos[0]++;
+		}
+		map_lines = map_lines->next;
+		pos[1]++;
+	}
+	return (0);
+}
+
 int32_t	main(void)
 {
 	mlx_t			*mlx;
 	mlx_texture_t	*texture;
-	mlx_texture_t	*floor;
-	mlx_texture_t	*wall;
-	uint32_t		xy[2];
-	uint32_t		wh[2];
 	t_data			data;
-	int				testmap[Y][X] = {
-		{1,1,1,1,1,1,1,1},
-		{1,0,0,0,0,0,0,1},
-		{1,0,0,0,0,0,0,1},
-		{1,1,1,1,1,1,1,1}
-	};
+	int				map;
 
-	xy[0] = 16 * 5 * 8;
-	xy[1] = 16 * 15 * 5;
-	wh[0] = 16 * 5;
-	wh[1] = 16 * 5;
+	map = open("src/map//test_maps/testMap1.ber", O_RDONLY);
+	save_map(map, &data);
+	if (check_map(&data) != OK)
+	{
+		print_err();
+		return (EXIT_FAILURE);
+	}
+
 	mlx = mlx_init(WIDTH, HEIGHT, "MLX42", true);
 	if (!mlx)
 		exit(EXIT_FAILURE);
 
+	texture = mlx_load_png("src/sprites/dungeonTileset.png");
 
-
-	// Background texture
-	floor = mlx_load_png("src/sprites/dungeonTileset.png");
-	data.background.image = mlx_texture_area_to_image(mlx, floor, (uint32_t[2]){160, 240}, (uint32_t[2]){80, 80});
+	// Floor texture
+	data.floor.image = mlx_texture_area_to_image(mlx, texture, (uint32_t[2]){160, 240}, (uint32_t[2]){80, 80});
 
 	// Wall texture
-	wall = mlx_load_png("src/sprites/dungeonTileset.png");
-	data.wall.image = mlx_texture_area_to_image(mlx, wall, (uint32_t[2]){0, 80}, (uint32_t[2]){80, 80});
+	data.wall.image = mlx_texture_area_to_image(mlx, texture, (uint32_t[2]){0, 80}, (uint32_t[2]){80, 80});
 
-	int	x = 0;
-	int	y = 0;
-	int id;
-	while (y != Y)
-	{
-		x = 0;
-		while (x != X)
-		{
-			if (testmap[y][x] == 1)
-			{
-				id = mlx_image_to_window(mlx, data.wall.image, x * 80, y * 80);
-				mlx_set_instance_depth(&data.wall.image->instances[id], 1);
-			}
-			else
-			{
-				id = mlx_image_to_window(mlx, data.background.image, x * 80, y * 80);
-				mlx_set_instance_depth(&data.wall.image->instances[id], 0);
-			}
-			x++;
-		}
-		y++;
-	}
+	// Collectible texture
+	data.collectible.image = mlx_texture_area_to_image(mlx, texture, (uint32_t[2]){80, 240}, (uint32_t[2]){80, 80});
+
+	// Exit texture
+	data.exit.image = mlx_texture_area_to_image(mlx, texture, (uint32_t[2]){320, 640}, (uint32_t[2]){80, 80});
 
 	// Player texture
-	texture = mlx_load_png("src/sprites/dungeonTileset.png");
-	data.image = mlx_texture_area_to_image(mlx, texture, xy, wh);
-	int32_t i = mlx_image_to_window(mlx, data.image, 80, 80);
-	// data.image->instances[i];
-	data.player.instance = &data.image->instances[i];
-	mlx_set_instance_depth(&data.wall.image->instances[i], 2);
+	data.player.image = mlx_texture_area_to_image(mlx, texture, (uint32_t[2]){80, 720}, (uint32_t[2]){80, 80});
+
+	draw_map_test(mlx, &data);
+
+	// int32_t i = mlx_image_to_window(mlx, data.player.image, 80, 80);
+	// data.player.instance = &data.player.image->instances[i];
+	// mlx_set_instance_depth(&data.player.image->instances[i], 2);
 
 	data.mlx = mlx;
 	mlx_loop_hook(mlx, &hook, &data);

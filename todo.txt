@@ -28,4 +28,11 @@ mlx_set_instance_depth
 gcc so_long.c -I include -L MLX42 -l mlx42 -l glfw3 -framework Cocoa -framework OpenGL -framework IOKit && ./a.out
 
 
-
+Voor check_map_path:
+	Clone de map in een 2d array
+	Verander collectibles en exit in 0
+	Verander player in 2
+	Iterate van links boven naar rechts onder
+	Alle 0's die grenzen aan een 2 worden een 2
+	De 2 wordt dan een 1
+	Check aan het einde van elke iteratie of er op de positie van de exit een 1 staat

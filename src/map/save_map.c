@@ -6,7 +6,7 @@
 /*   By: mforstho <mforstho@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/09 15:40:01 by mforstho      #+#    #+#                 */
-/*   Updated: 2022/08/24 17:52:26 by mforstho      ########   odam.nl         */
+/*   Updated: 2022/08/25 14:05:41 by mforstho      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,18 +55,18 @@ t_status	check_map(t_data *data)
 	return (OK);
 }
 
-int	main(void)
-{
-	int		map;
-	t_data	data;
+// int	main(void)
+// {
+// 	int		map;
+// 	t_data	data;
 
-	map = open("src/map/testMap.ber", O_RDONLY);
-	save_map(map, &data);
-	printf("Lines: %i\n\n", ft_lstsize(data.map_lines));
-	if (check_map(&data) != OK)
-	{
-		print_err();
-		return (EXIT_FAILURE);
-	}
-	return (EXIT_SUCCESS);
-}
+// 	map = open("src/map/testMap.ber", O_RDONLY);
+// 	save_map(map, &data);
+// 	printf("Lines: %i\n\n", ft_lstsize(data.map_lines));
+// 	if (check_map(&data) != OK)
+// 	{
+// 		print_err();
+// 		return (EXIT_FAILURE);
+// 	}
+// 	return (EXIT_SUCCESS);
+// }
