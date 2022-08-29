@@ -6,7 +6,7 @@
 /*   By: mforstho <mforstho@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/07/12 14:02:09 by mforstho      #+#    #+#                 */
-/*   Updated: 2022/08/25 16:53:04 by mforstho      ########   odam.nl         */
+/*   Updated: 2022/08/29 18:00:22 by mforstho      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ typedef struct s_player
 {
 	mlx_instance_t	*instance;
 	mlx_image_t		*image;
+	int				x;
+	int				y;
 }	t_player;
 
 typedef struct s_floor
@@ -60,6 +62,7 @@ typedef struct s_data
 	t_collectible	collectible;
 	t_exit			exit;
 	t_list			*map_lines;
+	char			**map_array;
 }	t_data;
 
 typedef enum e_error {
@@ -100,4 +103,6 @@ void		draw_exit(mlx_t *mlx, t_data *data, size_t *pos);
 t_status	check_map_edge(t_data *data);
 t_status	check_map_entities(t_data *data);
 t_status	check_map_rect(t_data *data);
+
+char		**convert_map(t_data *data);
 #endif

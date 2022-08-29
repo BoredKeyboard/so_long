@@ -6,13 +6,11 @@
 /*   By: mforstho <mforstho@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/28 15:54:14 by mforstho      #+#    #+#                 */
-/*   Updated: 2022/08/25 17:39:32 by mforstho      ########   odam.nl         */
+/*   Updated: 2022/08/29 18:15:23 by mforstho      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
-#define X 8
-#define Y 4
 
 void	image_hook(mlx_t *mlx, mlx_image_t *image)	// Exit window
 {
@@ -22,22 +20,61 @@ void	image_hook(mlx_t *mlx, mlx_image_t *image)	// Exit window
 		mlx_delete_image(mlx, image);
 }
 
-void	input_hook(t_data *data)	// Player movement
+void	initialize_collision(char **map_array, t_data *data)
 {
-	const t_player	*player = &data->player;
-	mlx_t			*mlx;
+	int		y;
+	size_t	x;
 
+	y = 0;
+	while (y < ft_lstsize(data->map_lines))
+	{
+		x = 0;
+		while (x < ft_strlen(map_array[y]))
+		{
+			if (map_array[y][x] == 'P')
+			{
+				data->player.x = (int)x;
+				data->player.y = y;
+			}
+			x++;
+		}
+		y++;
+	}
+}
+
+void	real_input_hook(mlx_key_data_t keydata, void *param)	// Player movement
+{
+	t_data		*data;
+	t_player	*player;
+	mlx_t		*mlx;
+
+	data = param;
+	player = &data->player;
 	mlx = data->mlx;
-	if (mlx_is_key_down(mlx, MLX_KEY_ESCAPE))
+	if (keydata.action != MLX_PRESS)
+		return ;
+	if (keydata.key == MLX_KEY_ESCAPE)
 		mlx_close_window(mlx);
-	if (mlx_is_key_down(mlx, MLX_KEY_W) || mlx_is_key_down(mlx, MLX_KEY_UP))
-		player->instance->y -= 10;
-	if (mlx_is_key_down(mlx, MLX_KEY_S) || mlx_is_key_down(mlx, MLX_KEY_DOWN))
-		player->instance->y += 10;
-	if (mlx_is_key_down(mlx, MLX_KEY_A) || mlx_is_key_down(mlx, MLX_KEY_LEFT))
-		player->instance->x -= 10;
-	if (mlx_is_key_down(mlx, MLX_KEY_D) || mlx_is_key_down(mlx, MLX_KEY_RIGHT))
-		player->instance->x += 10;
+	if (keydata.key == MLX_KEY_W && data->map_array[(player->y - 1)][player->x] != '1')
+	{
+		player->instance->y -= 80;
+		player->y--;
+	}
+	if (keydata.key == MLX_KEY_S && data->map_array[(player->y + 1)][player->x] != '1')
+	{
+		player->instance->y += 80;
+		player->y++;
+	}
+	if (keydata.key == MLX_KEY_A && data->map_array[player->y][(player->x - 1)] != '1')
+	{
+		player->instance->x -= 80;
+		player->x--;
+	}
+	if (keydata.key == MLX_KEY_D && data->map_array[player->y][(player->x + 1)] != '1')
+	{
+		player->instance->x += 80;
+		player->x++;
+	}
 }
 
 void	hook(void *param)	// Central hook function
@@ -50,7 +87,6 @@ void	hook(void *param)	// Central hook function
 	mlx = data->mlx;
 	image = data->image;
 	image_hook(mlx, image);
-	input_hook(data);
 }
 
 void	draw_entity(char c, mlx_t *mlx, t_data *data, size_t *pos)
@@ -67,7 +103,7 @@ void	draw_entity(char c, mlx_t *mlx, t_data *data, size_t *pos)
 }
 
 // t_status van maken of int32_t
-int	draw_map_test(mlx_t *mlx, t_data *data)
+int	draw_map(mlx_t *mlx, t_data *data)
 {
 	t_list	*map_lines;
 	size_t	pos[2];
@@ -92,49 +128,53 @@ int	draw_map_test(mlx_t *mlx, t_data *data)
 	return (0);
 }
 
-int32_t	main(void)
+void	initialize_textures(mlx_t *mlx, t_data *data)
+{
+	mlx_texture_t	*texture;
+
+	texture = mlx_load_png("src/sprites/dungeonTileset.png");
+	data->floor.image = mlx_texture_area_to_image(mlx, texture,
+			(uint32_t[2]){160, 240}, (uint32_t[2]){80, 80});
+	data->wall.image = mlx_texture_area_to_image(mlx, texture,
+			(uint32_t[2]){0, 80}, (uint32_t[2]){80, 80});
+	data->collectible.image = mlx_texture_area_to_image(mlx, texture,
+			(uint32_t[2]){80, 240}, (uint32_t[2]){80, 80});
+	data->exit.image = mlx_texture_area_to_image(mlx, texture,
+			(uint32_t[2]){320, 640}, (uint32_t[2]){80, 80});
+	data->player.image = mlx_texture_area_to_image(mlx, texture,
+			(uint32_t[2]){80, 720}, (uint32_t[2]){80, 80});
+}
+
+int32_t	main(int argc, char *argv[])
 {
 	mlx_t			*mlx;
-	mlx_texture_t	*texture;
 	t_data			data;
 	int				map;
 
-	map = open("src/map//test_maps/testMap1.ber", O_RDONLY);
+	if (argc > 2 || argc < 2)
+	{
+		printf("Invalid amount of arguments\n");
+		return (EXIT_FAILURE);
+	}
+	map = open(argv[1], O_RDONLY);
 	save_map(map, &data);
 	if (check_map(&data) != OK)
 	{
 		print_err();
 		return (EXIT_FAILURE);
 	}
+	data.map_array = convert_map(&data);
+	initialize_collision(data.map_array, &data);
 
 	mlx = mlx_init(WIDTH, HEIGHT, "MLX42", true);
 	if (!mlx)
 		exit(EXIT_FAILURE);
 
-	texture = mlx_load_png("src/sprites/dungeonTileset.png");
-
-	// Floor texture
-	data.floor.image = mlx_texture_area_to_image(mlx, texture, (uint32_t[2]){160, 240}, (uint32_t[2]){80, 80});
-
-	// Wall texture
-	data.wall.image = mlx_texture_area_to_image(mlx, texture, (uint32_t[2]){0, 80}, (uint32_t[2]){80, 80});
-
-	// Collectible texture
-	data.collectible.image = mlx_texture_area_to_image(mlx, texture, (uint32_t[2]){80, 240}, (uint32_t[2]){80, 80});
-
-	// Exit texture
-	data.exit.image = mlx_texture_area_to_image(mlx, texture, (uint32_t[2]){320, 640}, (uint32_t[2]){80, 80});
-
-	// Player texture
-	data.player.image = mlx_texture_area_to_image(mlx, texture, (uint32_t[2]){80, 720}, (uint32_t[2]){80, 80});
-
-	draw_map_test(mlx, &data);
-
-	// int32_t i = mlx_image_to_window(mlx, data.player.image, 80, 80);
-	// data.player.instance = &data.player.image->instances[i];
-	// mlx_set_instance_depth(&data.player.image->instances[i], 2);
+	initialize_textures(mlx, &data);
+	draw_map(mlx, &data);
 
 	data.mlx = mlx;
+	mlx_key_hook(mlx, &real_input_hook, &data);
 	mlx_loop_hook(mlx, &hook, &data);
 	mlx_loop(mlx);
 	mlx_terminate(mlx);

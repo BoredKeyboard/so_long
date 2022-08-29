@@ -6,7 +6,7 @@
 /*   By: mforstho <mforstho@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/09 15:40:01 by mforstho      #+#    #+#                 */
-/*   Updated: 2022/08/25 14:05:41 by mforstho      ########   odam.nl         */
+/*   Updated: 2022/08/29 17:37:32 by mforstho      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ t_status	save_map(int map, t_data *data)
 			ft_lstclear(&data->map_lines, &free);
 			return (set_error(MALLOC_ERROR));
 		}
-		printf("%s", ft_lstlast(data->map_lines)->content);
 		temp_line = get_next_line(map);
 	}
 	return (OK);
