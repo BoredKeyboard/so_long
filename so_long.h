@@ -6,7 +6,7 @@
 /*   By: mforstho <mforstho@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/07/12 14:02:09 by mforstho      #+#    #+#                 */
-/*   Updated: 2022/08/30 14:35:31 by mforstho      ########   odam.nl         */
+/*   Updated: 2022/08/30 18:09:39 by mforstho      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ typedef struct s_player
 	mlx_image_t		*image;
 	int				x;
 	int				y;
+	int				move_count;
 }	t_player;
 
 typedef struct s_floor
@@ -55,27 +56,11 @@ typedef struct s_collectible
 	int					total;
 }	t_collectible;
 
-// IDs: [5, 8, 10]
-//       ^
-//      x=10, y=5
-//
-// index = x + y * width
-
-// 0, 1, 2
-// 3, 4, 5
-// 6, 7, 8
-
-/*
- IDs: {
-	{ID, x, y},
-	{ID, x, y}
-}
-
-*/
 typedef struct	s_exit
 {
 	mlx_instance_t	*instance;
 	mlx_image_t		*image;
+	int				pos[2];
 }	t_exit;
 
 typedef struct s_data
@@ -96,7 +81,8 @@ typedef enum e_error {
 	INT_ERROR,
 	NON_RECT_ERROR,
 	EDGE_ERROR,
-	ENTITY_ERROR
+	ENTITY_ERROR,
+	PATH_ERROR
 }	t_error;
 
 typedef enum e_status {
@@ -104,14 +90,19 @@ typedef enum e_status {
 	ERROR,
 }	t_status;
 
-typedef void	(*t_draw_function)(mlx_t *mlx, t_data *data, size_t *pos);
+typedef void	(*t_draw_function)(mlx_t *mlx, t_data *data, size_t pos[2]);
 
 #ifndef SO_LONG_H
 # define WIDTH 1600
 # define HEIGHT 1600
 # define MAP "src/map/testMap.ber"
+# define VISITED '1'
+# define VISITING '2'
+# define PLAYER 'P'
+# define EXIT 'E'
+# define COLLECTIBLE 'C'
+# define EMPTY '0'
 
-// static t_error	*get_error_ptr(void);
 t_status	set_error(t_error error);
 t_error		get_error(void);
 
@@ -119,15 +110,18 @@ t_status	save_map(int map, t_data *data);
 void		print_err(void);
 t_status	check_map(t_data *data);
 
-void		draw_wall(mlx_t *mlx, t_data *data, size_t *pos);
-void		draw_floor(mlx_t *mlx, t_data *data, size_t *pos);
-void		draw_player(mlx_t *mlx, t_data *data, size_t *pos);
-void		draw_collectible(mlx_t *mlx, t_data *data, size_t *pos);
-void		draw_exit(mlx_t *mlx, t_data *data, size_t *pos);
+void		draw_wall(mlx_t *mlx, t_data *data, size_t pos[2]);
+void		draw_floor(mlx_t *mlx, t_data *data, size_t pos[2]);
+void		draw_player(mlx_t *mlx, t_data *data, size_t pos[2]);
+void		draw_collectible(mlx_t *mlx, t_data *data, size_t pos[2]);
+void		draw_exit(mlx_t *mlx, t_data *data, size_t pos[2]);
 
 t_status	check_map_edge(t_data *data);
 t_status	check_map_entities(t_data *data);
 t_status	check_map_rect(t_data *data);
+t_status	check_map_path(t_data *data);
+
+void		free_map_array(char **map_array);
 
 char		**convert_map(t_data *data);
 

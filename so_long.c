@@ -6,18 +6,16 @@
 /*   By: mforstho <mforstho@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/28 15:54:14 by mforstho      #+#    #+#                 */
-/*   Updated: 2022/08/30 14:45:10 by mforstho      ########   odam.nl         */
+/*   Updated: 2022/08/30 18:04:38 by mforstho      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-void	image_hook(mlx_t *mlx)	// Exit window
+void	exit_hook(mlx_t *mlx)
 {
 	if (mlx_is_key_down(mlx, MLX_KEY_ESCAPE))
 		mlx_close_window(mlx);
-	// if (mlx_is_key_down(mlx, MLX_KEY_P))
-	// 	mlx_delete_image(mlx, image);
 }
 
 void	initialize_entity_data(char **map_array, t_data *data)
@@ -26,10 +24,10 @@ void	initialize_entity_data(char **map_array, t_data *data)
 	size_t	x;
 
 	y = 0;
-	while (y < ft_lstsize(data->map_lines))
+	while (map_array[y] != NULL)
 	{
 		x = 0;
-		while (x < ft_strlen(map_array[y]))
+		while (map_array[y][x] != '\0')
 		{
 			if (map_array[y][x] == 'P')
 			{
@@ -63,43 +61,55 @@ void	real_input_hook(mlx_key_data_t keydata, void *param)	// Player movement
 		move_player_left(player);
 	if (keydata.key == MLX_KEY_D && data->map_array[player->y][(player->x + 1)] != '1')
 		move_player_right(player);
+	ft_putendl_fd(ft_itoa(player->move_count), 1);
 }
 
-void	collectible_pickup(mlx_t *mlx, t_data *data)
+void	collectible_pickup(t_data *data)
 {
-	t_player	*player;
-	int			i;
+	int				i;
+	t_player		*player;
+	t_collectible	*collectible;
 
 	i = 0;
 	player = &data->player;
+	collectible = &data->collectible;
 	if (data->map_array[player->y][player->x] == 'C')
 	{
-		printf("Collectible count before: %i\n", data->collectible.count);
-		data->collectible.count++;
+		collectible->count++;
 		data->map_array[player->y][player->x] = '0';
-		(void)mlx;
-		while (i < data->collectible.total)
+		while (i < collectible->total)
 		{
-			if (data->collectible.info[i].x == player->x && data->collectible.info[i].y == player->y)
-				data->collectible.image->instances[data->collectible.info[i].id].enabled = false;
+			if (collectible->info[i].x == player->x && collectible->info[i].y == player->y)
+				collectible->image->instances[collectible->info[i].id].enabled = false;
 			i++;
 		}
-		printf("Collectible count after: %i\n", data->collectible.count);
 	}
 }
 
-void	hook(void *param)	// Central hook function
+void	exit_game(mlx_t *mlx, t_data *data)
+{
+	t_player		*player;
+	t_collectible	*collectible;
+
+	player = &data->player;
+	collectible = &data->collectible;
+	if (collectible->count == collectible->total && data->map_array[player->y][player->x] == 'E')
+		mlx_close_window(mlx);
+}
+
+void	hook(void *param)
 {
 	t_data		*data;
 	mlx_t		*mlx;
 
 	data = param;
 	mlx = data->mlx;
-	image_hook(mlx);
-	collectible_pickup(mlx, data);
+	exit_hook(mlx);
+	collectible_pickup(data);
+	exit_game(mlx, data);
 }
 
-void	draw_entity(char c, mlx_t *mlx, t_data *data, size_t *pos)
+void	draw_entity(char c, mlx_t *mlx, t_data *data, size_t pos[2])
 {
 	static t_draw_function	draw_functions[] = {
 	['1'] = draw_wall,
@@ -112,30 +122,23 @@ void	draw_entity(char c, mlx_t *mlx, t_data *data, size_t *pos)
 	return (draw_functions[(int)c](mlx, data, pos));
 }
 
-// t_status van maken of int32_t
-int	draw_map(mlx_t *mlx, t_data *data)
+void	draw_map(mlx_t *mlx, t_data *data)
 {
-	t_list	*map_lines;
 	size_t	pos[2];
-	size_t	line_length;
-	char	*map_line;
+	char	**map_array;
 
+	map_array = data->map_array;
 	pos[1] = 0;
-	map_lines = data->map_lines;
-	line_length = ft_strlen(map_lines->content);
-	while (map_lines)
+	while (map_array[pos[1]] != NULL)
 	{
-		map_line = map_lines->content;
 		pos[0] = 0;
-		while (pos[0] != line_length - 1)
+		while (map_array[pos[1]][pos[0]] != '\n')
 		{
-			draw_entity(map_line[pos[0]], mlx, data, pos);
+			draw_entity(map_array[pos[1]][pos[0]], mlx, data, pos);
 			pos[0]++;
 		}
-		map_lines = map_lines->next;
 		pos[1]++;
 	}
-	return (0);
 }
 
 void	initialize_textures(mlx_t *mlx, t_data *data)
@@ -169,12 +172,13 @@ int32_t	main(int argc, char *argv[])
 	}
 	map = open(argv[1], O_RDONLY);
 	save_map(map, &data);
+	data.map_array = convert_map(&data);
 	if (check_map(&data) != OK)
 	{
 		print_err();
 		return (EXIT_FAILURE);
 	}
-	data.map_array = convert_map(&data);
+	ft_lstclear(&data.map_lines, &free);
 	initialize_entity_data(data.map_array, &data);
 	data.collectible.info = malloc(sizeof(t_collectible_info) * data.collectible.total);
 
@@ -190,6 +194,7 @@ int32_t	main(int argc, char *argv[])
 	mlx_loop_hook(mlx, &hook, &data);
 	mlx_loop(mlx);
 	mlx_terminate(mlx);
+	free_map_array(data.map_array);
 	free(data.collectible.info);
 	return (EXIT_SUCCESS);
 }

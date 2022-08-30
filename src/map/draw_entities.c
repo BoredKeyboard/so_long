@@ -6,13 +6,13 @@
 /*   By: mforstho <mforstho@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/25 15:12:56 by mforstho      #+#    #+#                 */
-/*   Updated: 2022/08/30 14:38:26 by mforstho      ########   odam.nl         */
+/*   Updated: 2022/08/30 18:05:07 by mforstho      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../so_long.h"
 
-void	draw_wall(mlx_t *mlx, t_data *data, size_t *pos)
+void	draw_wall(mlx_t *mlx, t_data *data, size_t pos[2])
 {
 	int	id;
 
@@ -20,7 +20,7 @@ void	draw_wall(mlx_t *mlx, t_data *data, size_t *pos)
 	mlx_set_instance_depth(&data->wall.image->instances[id], 1);
 }
 
-void	draw_floor(mlx_t *mlx, t_data *data, size_t *pos)
+void	draw_floor(mlx_t *mlx, t_data *data, size_t pos[2])
 {
 	int	id;
 
@@ -28,7 +28,7 @@ void	draw_floor(mlx_t *mlx, t_data *data, size_t *pos)
 	mlx_set_instance_depth(&data->floor.image->instances[id], 0);
 }
 
-void	draw_player(mlx_t *mlx, t_data *data, size_t *pos)
+void	draw_player(mlx_t *mlx, t_data *data, size_t pos[2])
 {
 	int	id;
 
@@ -39,7 +39,7 @@ void	draw_player(mlx_t *mlx, t_data *data, size_t *pos)
 	mlx_set_instance_depth(&data->floor.image->instances[id], 0);
 }
 
-void	draw_collectible(mlx_t *mlx, t_data *data, size_t *pos)
+void	draw_collectible(mlx_t *mlx, t_data *data, size_t pos[2])
 {
 	int			id;
 	static int	id_index;
@@ -54,7 +54,7 @@ void	draw_collectible(mlx_t *mlx, t_data *data, size_t *pos)
 	mlx_set_instance_depth(&data->floor.image->instances[id], 0);
 }
 
-void	draw_exit(mlx_t *mlx, t_data *data, size_t *pos)
+void	draw_exit(mlx_t *mlx, t_data *data, size_t pos[2])
 {
 	int	id;
 

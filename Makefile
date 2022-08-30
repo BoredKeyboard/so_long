@@ -6,7 +6,7 @@
 #    By: mforstho <mforstho@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/10/12 16:16:58 by mforstho      #+#    #+#                  #
-#    Updated: 2022/08/30 13:33:46 by mforstho      ########   odam.nl          #
+#    Updated: 2022/08/30 17:01:35 by mforstho      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,6 +24,7 @@ SOURCES :=									\
 	src/map/check_map/check_map_rect.c		\
 	src/map/check_map/check_map_edge.c		\
 	src/map/check_map/check_map_entities.c	\
+	src/map/check_map/check_map_path.c		\
 	src/get_next_line/get_next_line.c		\
 	src/get_next_line/get_next_line_utils.c	\
 	src/map/draw_entities.c					\
