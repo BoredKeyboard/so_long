@@ -6,7 +6,7 @@
 /*   By: mforstho <mforstho@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/07/12 14:02:09 by mforstho      #+#    #+#                 */
-/*   Updated: 2022/08/29 18:00:22 by mforstho      ########   odam.nl         */
+/*   Updated: 2022/08/30 14:35:31 by mforstho      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,12 +40,38 @@ typedef struct s_wall
 	mlx_image_t		*image;
 }	t_wall;
 
+typedef struct s_collectible_info
+{
+	int	x;
+	int	y;
+	int	id;
+}	t_collectible_info;
+
 typedef struct s_collectible
 {
-	mlx_instance_t	*instance;
-	mlx_image_t		*image;
+	mlx_image_t			*image;
+	t_collectible_info	*info;
+	int					count;
+	int					total;
 }	t_collectible;
 
+// IDs: [5, 8, 10]
+//       ^
+//      x=10, y=5
+//
+// index = x + y * width
+
+// 0, 1, 2
+// 3, 4, 5
+// 6, 7, 8
+
+/*
+ IDs: {
+	{ID, x, y},
+	{ID, x, y}
+}
+
+*/
 typedef struct	s_exit
 {
 	mlx_instance_t	*instance;
@@ -55,7 +81,6 @@ typedef struct	s_exit
 typedef struct s_data
 {
 	mlx_t			*mlx;
-	mlx_image_t		*image;
 	t_player		player;
 	t_floor			floor;
 	t_wall			wall;
@@ -105,4 +130,9 @@ t_status	check_map_entities(t_data *data);
 t_status	check_map_rect(t_data *data);
 
 char		**convert_map(t_data *data);
+
+void		move_player_up(t_player *player);
+void		move_player_down(t_player *player);
+void		move_player_left(t_player *player);
+void		move_player_right(t_player *player);
 #endif

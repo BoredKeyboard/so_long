@@ -6,21 +6,21 @@
 /*   By: mforstho <mforstho@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/28 15:54:14 by mforstho      #+#    #+#                 */
-/*   Updated: 2022/08/29 18:15:23 by mforstho      ########   odam.nl         */
+/*   Updated: 2022/08/30 14:45:10 by mforstho      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-void	image_hook(mlx_t *mlx, mlx_image_t *image)	// Exit window
+void	image_hook(mlx_t *mlx)	// Exit window
 {
 	if (mlx_is_key_down(mlx, MLX_KEY_ESCAPE))
 		mlx_close_window(mlx);
-	if (mlx_is_key_down(mlx, MLX_KEY_P))
-		mlx_delete_image(mlx, image);
+	// if (mlx_is_key_down(mlx, MLX_KEY_P))
+	// 	mlx_delete_image(mlx, image);
 }
 
-void	initialize_collision(char **map_array, t_data *data)
+void	initialize_entity_data(char **map_array, t_data *data)
 {
 	int		y;
 	size_t	x;
@@ -36,6 +36,8 @@ void	initialize_collision(char **map_array, t_data *data)
 				data->player.x = (int)x;
 				data->player.y = y;
 			}
+			if (map_array[y][x] == 'C')
+				data->collectible.total++;
 			x++;
 		}
 		y++;
@@ -53,27 +55,36 @@ void	real_input_hook(mlx_key_data_t keydata, void *param)	// Player movement
 	mlx = data->mlx;
 	if (keydata.action != MLX_PRESS)
 		return ;
-	if (keydata.key == MLX_KEY_ESCAPE)
-		mlx_close_window(mlx);
 	if (keydata.key == MLX_KEY_W && data->map_array[(player->y - 1)][player->x] != '1')
-	{
-		player->instance->y -= 80;
-		player->y--;
-	}
+		move_player_up(player);
 	if (keydata.key == MLX_KEY_S && data->map_array[(player->y + 1)][player->x] != '1')
-	{
-		player->instance->y += 80;
-		player->y++;
-	}
+		move_player_down(player);
 	if (keydata.key == MLX_KEY_A && data->map_array[player->y][(player->x - 1)] != '1')
-	{
-		player->instance->x -= 80;
-		player->x--;
-	}
+		move_player_left(player);
 	if (keydata.key == MLX_KEY_D && data->map_array[player->y][(player->x + 1)] != '1')
+		move_player_right(player);
+}
+
+void	collectible_pickup(mlx_t *mlx, t_data *data)
+{
+	t_player	*player;
+	int			i;
+
+	i = 0;
+	player = &data->player;
+	if (data->map_array[player->y][player->x] == 'C')
 	{
-		player->instance->x += 80;
-		player->x++;
+		printf("Collectible count before: %i\n", data->collectible.count);
+		data->collectible.count++;
+		data->map_array[player->y][player->x] = '0';
+		(void)mlx;
+		while (i < data->collectible.total)
+		{
+			if (data->collectible.info[i].x == player->x && data->collectible.info[i].y == player->y)
+				data->collectible.image->instances[data->collectible.info[i].id].enabled = false;
+			i++;
+		}
+		printf("Collectible count after: %i\n", data->collectible.count);
 	}
 }
 
@@ -81,12 +92,11 @@ void	hook(void *param)	// Central hook function
 {
 	t_data		*data;
 	mlx_t		*mlx;
-	mlx_image_t	*image;
 
 	data = param;
 	mlx = data->mlx;
-	image = data->image;
-	image_hook(mlx, image);
+	image_hook(mlx);
+	collectible_pickup(mlx, data);
 }
 
 void	draw_entity(char c, mlx_t *mlx, t_data *data, size_t *pos)
@@ -151,6 +161,7 @@ int32_t	main(int argc, char *argv[])
 	t_data			data;
 	int				map;
 
+	ft_bzero(&data, sizeof(t_data));
 	if (argc > 2 || argc < 2)
 	{
 		printf("Invalid amount of arguments\n");
@@ -164,7 +175,8 @@ int32_t	main(int argc, char *argv[])
 		return (EXIT_FAILURE);
 	}
 	data.map_array = convert_map(&data);
-	initialize_collision(data.map_array, &data);
+	initialize_entity_data(data.map_array, &data);
+	data.collectible.info = malloc(sizeof(t_collectible_info) * data.collectible.total);
 
 	mlx = mlx_init(WIDTH, HEIGHT, "MLX42", true);
 	if (!mlx)
@@ -178,5 +190,6 @@ int32_t	main(int argc, char *argv[])
 	mlx_loop_hook(mlx, &hook, &data);
 	mlx_loop(mlx);
 	mlx_terminate(mlx);
+	free(data.collectible.info);
 	return (EXIT_SUCCESS);
 }
