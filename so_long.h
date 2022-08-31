@@ -6,7 +6,7 @@
 /*   By: mforstho <mforstho@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/07/12 14:02:09 by mforstho      #+#    #+#                 */
-/*   Updated: 2022/08/31 15:10:12 by mforstho      ########   odam.nl         */
+/*   Updated: 2022/08/31 18:28:05 by mforstho      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,12 @@ typedef enum e_error {
 	NON_RECT_ERROR,
 	EDGE_ERROR,
 	ENTITY_ERROR,
-	PATH_ERROR
+	PATH_ERROR,
+	OPEN_ERROR,
+	SMALL_MAP_ERROR,
+	MLX_ERROR,
+	ARG_COUNT_ERROR,
+	FILETYPE_ERROR,
 }	t_error;
 
 typedef enum e_status {
@@ -93,7 +98,7 @@ typedef enum e_status {
 	ERROR,
 }	t_status;
 
-typedef void	(*t_draw_function)(mlx_t *mlx, t_data *data, size_t pos[2]);
+typedef t_status	(*t_draw_function)(t_data *data, size_t pos[2]);
 
 # define VISITED '1'
 # define VISITING '2'
@@ -134,21 +139,20 @@ void		print_err(void);
 t_status	check_map(t_data *data);
 
 // convert_map.c
-char		**convert_map(t_data *data);
+t_status	convert_map(t_data *data);
 
 // draw_entities.c
-void		draw_wall(mlx_t *mlx, t_data *data, size_t pos[2]);
-void		draw_floor(mlx_t *mlx, t_data *data, size_t pos[2]);
-void		draw_player(mlx_t *mlx, t_data *data, size_t pos[2]);
-void		draw_collectible(mlx_t *mlx, t_data *data, size_t pos[2]);
-void		draw_exit(mlx_t *mlx, t_data *data, size_t pos[2]);
+t_status	draw_wall(t_data *data, size_t pos[2]);
+t_status	draw_floor(t_data *data, size_t pos[2]);
+t_status	draw_player(t_data *data, size_t pos[2]);
+t_status	draw_collectible(t_data *data, size_t pos[2]);
+t_status	draw_exit(t_data *data, size_t pos[2]);
 
 // draw_map.c
-void		initialize_textures(mlx_t *mlx, t_data *data);
-void		init_textures_draw_map(mlx_t *mlx, t_data *data);
-void		draw_entity(char c, mlx_t *mlx, t_data *data, size_t pos[2]);
-void		draw_map(mlx_t *mlx, t_data *data);
-int32_t		map_error(t_data *data);
+t_status	initialize_textures(t_data *data);
+t_status	init_textures_draw_map(t_data *data);
+t_status	draw_entity(char c, t_data *data, size_t pos[2]);
+t_status	draw_map(t_data *data);
 
 // free_map_array.c
 void		free_map_array(char **map_array);

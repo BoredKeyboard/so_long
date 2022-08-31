@@ -6,7 +6,7 @@
 #    By: mforstho <mforstho@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/10/12 16:16:58 by mforstho      #+#    #+#                  #
-#    Updated: 2022/08/31 15:12:27 by mforstho      ########   odam.nl          #
+#    Updated: 2022/08/31 18:40:13 by mforstho      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@
 NAME := so_long
 CC := gcc
 CFLAGS ?= -Wextra -Wall -Werror
-CFLAGS += -fsanitize=address -g
+CFLAGS += -g -fsanitize=address
 
 SOURCES :=									\
 	src/entities/collectible_pickup.c		\

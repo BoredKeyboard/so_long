@@ -6,7 +6,7 @@
 /*   By: mforstho <mforstho@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/07/14 14:52:07 by mforstho      #+#    #+#                 */
-/*   Updated: 2022/08/31 14:35:23 by mforstho      ########   odam.nl         */
+/*   Updated: 2022/08/31 18:30:35 by mforstho      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,14 @@ void	print_err(void)
 	[EDGE_ERROR] = "EDGE_ERROR",
 	[ENTITY_ERROR] = "ENTITY_ERROR",
 	[PATH_ERROR] = "PATH_ERROR",
+	[OPEN_ERROR] = "OPEN_ERROR",
+	[SMALL_MAP_ERROR] = "SMALL_MAP_ERROR",
+	[MLX_ERROR] = "MLX_ERROR",
+	[ARG_COUNT_ERROR] = "ARG_COUNT_ERROR",
+	[FILETYPE_ERROR] = "FILETYPE_ERROR",
 	};
 
-	ft_putendl_fd(error_texts[get_error()], 1);
+	ft_putendl_fd(error_texts[get_error()], STDERR_FILENO);
 }
 
 t_status	check_map(t_data *data)

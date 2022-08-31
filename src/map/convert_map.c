@@ -6,13 +6,13 @@
 /*   By: mforstho <mforstho@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/29 16:24:08 by mforstho      #+#    #+#                 */
-/*   Updated: 2022/08/31 14:30:58 by mforstho      ########   odam.nl         */
+/*   Updated: 2022/08/31 16:09:07 by mforstho      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../so_long.h"
 
-char	**convert_map(t_data *data)
+t_status	convert_map(t_data *data)
 {
 	int		rows;
 	int		y;
@@ -22,13 +22,21 @@ char	**convert_map(t_data *data)
 	map_lines = data->map_lines;
 	rows = ft_lstsize(map_lines);
 	map_array = malloc(((size_t)rows + 1) * sizeof(char *));
+	if (map_array == NULL)
+		return (set_error(MALLOC_ERROR));
 	y = 0;
 	while (y < rows)
 	{
 		map_array[y] = strdup(map_lines->content);
+		if (map_array[y] == NULL)
+		{
+			free_map_array(map_array);
+			return (set_error(MALLOC_ERROR));
+		}
 		map_lines = map_lines->next;
 		y++;
 	}
 	map_array[y] = NULL;
-	return (map_array);
+	data->map_array = map_array;
+	return (OK);
 }
