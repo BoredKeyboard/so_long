@@ -6,7 +6,7 @@
 /*   By: mforstho <mforstho@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/28 15:54:14 by mforstho      #+#    #+#                 */
-/*   Updated: 2022/08/31 18:31:48 by mforstho      ########   odam.nl         */
+/*   Updated: 2022/08/31 18:49:41 by mforstho      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,14 @@ void	hook(void *param)
 
 t_status	validate_arguments(int argc, char *argv[])
 {
+	size_t	len;
+
 	if (argc != 2)
 		return (set_error(ARG_COUNT_ERROR));
-	if (!ft_strnstr(argv[1], ".ber", ft_strlen(argv[1]))) // .ber.txt
+	len = ft_strlen(argv[1]);
+	if (len < 4)
+		return (set_error(FILETYPE_ERROR));
+	if (ft_strncmp(&argv[1][len - 4], ".ber", 4) != 0)
 		return (set_error(FILETYPE_ERROR));
 	return (OK);
 }
