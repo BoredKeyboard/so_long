@@ -6,7 +6,7 @@
 /*   By: mforstho <mforstho@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/11/08 12:52:16 by mforstho      #+#    #+#                 */
-/*   Updated: 2022/06/22 13:33:16 by mforstho      ########   odam.nl         */
+/*   Updated: 2022/08/31 14:32:22 by mforstho      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,6 @@ static char	*split_join(char *line, char *buf)
 		free(line);
 		return (NULL);
 	}
-	// line = char * -> void *
-	// &line = (char *)* -> (void)*
 	if (replace_value(&line, ft_strjoin(line, ln_end)) == NULL)
 	{
 		free(ln_end);

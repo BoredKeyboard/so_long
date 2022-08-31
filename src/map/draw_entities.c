@@ -6,7 +6,7 @@
 /*   By: mforstho <mforstho@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/25 15:12:56 by mforstho      #+#    #+#                 */
-/*   Updated: 2022/08/30 18:05:07 by mforstho      ########   odam.nl         */
+/*   Updated: 2022/08/31 14:30:41 by mforstho      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,8 @@ void	draw_collectible(mlx_t *mlx, t_data *data, size_t pos[2])
 	int			id;
 	static int	id_index;
 
-	id = mlx_image_to_window(mlx, data->collectible.image, pos[0] * 80, pos[1] * 80);
+	id = mlx_image_to_window(mlx, data->collectible.image, pos[0] * 80,
+			pos[1] * 80);
 	mlx_set_instance_depth(&data->collectible.image->instances[id], 1);
 	data->collectible.info[id_index].id = id;
 	data->collectible.info[id_index].x = pos[0];

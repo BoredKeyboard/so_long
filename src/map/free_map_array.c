@@ -1,34 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   convert_map.c                                      :+:    :+:            */
+/*   free_map_array.c                                   :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mforstho <mforstho@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/08/29 16:24:08 by mforstho      #+#    #+#                 */
-/*   Updated: 2022/08/31 14:30:58 by mforstho      ########   odam.nl         */
+/*   Created: 2022/08/31 15:09:14 by mforstho      #+#    #+#                 */
+/*   Updated: 2022/08/31 15:09:41 by mforstho      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../so_long.h"
+#include "so_long.h"
 
-char	**convert_map(t_data *data)
+void	free_map_array(char **map_array)
 {
-	int		rows;
-	int		y;
-	char	**map_array;
-	t_list	*map_lines;
+	int	y;
 
-	map_lines = data->map_lines;
-	rows = ft_lstsize(map_lines);
-	map_array = malloc(((size_t)rows + 1) * sizeof(char *));
 	y = 0;
-	while (y < rows)
+	while (map_array[y] != NULL)
 	{
-		map_array[y] = strdup(map_lines->content);
-		map_lines = map_lines->next;
+		free(map_array[y]);
 		y++;
 	}
-	map_array[y] = NULL;
-	return (map_array);
+	free(map_array);
 }
