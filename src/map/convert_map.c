@@ -6,11 +6,11 @@
 /*   By: mforstho <mforstho@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/29 16:24:08 by mforstho      #+#    #+#                 */
-/*   Updated: 2022/08/31 16:09:07 by mforstho      ########   odam.nl         */
+/*   Updated: 2022/09/05 14:31:04 by mforstho      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../so_long.h"
+#include "so_long.h"
 
 t_status	convert_map(t_data *data)
 {

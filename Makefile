@@ -6,7 +6,7 @@
 #    By: mforstho <mforstho@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/10/12 16:16:58 by mforstho      #+#    #+#                  #
-#    Updated: 2022/08/31 18:40:13 by mforstho      ########   odam.nl          #
+#    Updated: 2022/09/05 14:39:30 by mforstho      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,6 +26,7 @@ SOURCES :=									\
 	src/map/check_map/check_map_path.c		\
 	src/map/check_map/check_map_rect.c		\
 	src/map/check_map/check_map.c			\
+	src/map/check_map/duplicate_map.c		\
 	src/map/convert_map.c					\
 	src/map/draw_entities.c					\
 	src/map/draw_map.c						\
@@ -33,9 +34,10 @@ SOURCES :=									\
 	src/map/save_map.c						\
 	src/get_next_line/get_next_line.c		\
 	src/get_next_line/get_next_line_utils.c	\
-	so_long.c
+	src/initialize_mlx_data.c				\
+	src/so_long.c
 
-HEADERS := so_long.h libft/libft.h src/get_next_line/get_next_line.h
+HEADERS := src/so_long.h libft/libft.h src/get_next_line/get_next_line.h
 OBJDIR := obj
 OBJECTS := $(addprefix $(OBJDIR)/, $(SOURCES:c=o))
 

@@ -6,22 +6,22 @@
 /*   By: mforstho <mforstho@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/07/12 14:02:09 by mforstho      #+#    #+#                 */
-/*   Updated: 2022/08/31 18:28:05 by mforstho      ########   odam.nl         */
+/*   Updated: 2022/09/05 14:39:10 by mforstho      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SO_LONG_H
 # define SO_LONG_H
 
-# include "MLX42/include/MLX42/MLX42.h"
+# include "../MLX42/include/MLX42/MLX42.h"
 # include <stdlib.h>
 # include <stdio.h>
 # include <unistd.h>
 # include <memory.h>
 # include <fcntl.h>
 
-# include "libft/libft.h"
-# include "src/get_next_line/get_next_line.h"
+# include "../libft/libft.h"
+# include "get_next_line/get_next_line.h"
 
 typedef struct s_player
 {
@@ -91,6 +91,7 @@ typedef enum e_error {
 	MLX_ERROR,
 	ARG_COUNT_ERROR,
 	FILETYPE_ERROR,
+	INVALID_CHAR_ERROR,
 }	t_error;
 
 typedef enum e_status {
@@ -141,6 +142,9 @@ t_status	check_map(t_data *data);
 // convert_map.c
 t_status	convert_map(t_data *data);
 
+// duplicate_map.c
+char		**duplicate_map(char **arr, int rows);
+
 // draw_entities.c
 t_status	draw_wall(t_data *data, size_t pos[2]);
 t_status	draw_floor(t_data *data, size_t pos[2]);
@@ -159,5 +163,10 @@ void		free_map_array(char **map_array);
 
 // save_map.c
 t_status	save_map(int map, t_data *data);
+
+// initialize_mlx_data.c
+t_status	run_mlx(t_data *data);
+t_status	load_entity_data(t_data *data);
+t_status	initialize_mlx_data(t_data *data);
 
 #endif

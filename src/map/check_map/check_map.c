@@ -6,11 +6,11 @@
 /*   By: mforstho <mforstho@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/07/14 14:52:07 by mforstho      #+#    #+#                 */
-/*   Updated: 2022/08/31 18:30:35 by mforstho      ########   odam.nl         */
+/*   Updated: 2022/09/05 14:30:55 by mforstho      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../so_long.h"
+#include "so_long.h"
 
 static t_error	*get_error_ptr(void)
 {
@@ -47,6 +47,7 @@ void	print_err(void)
 	[MLX_ERROR] = "MLX_ERROR",
 	[ARG_COUNT_ERROR] = "ARG_COUNT_ERROR",
 	[FILETYPE_ERROR] = "FILETYPE_ERROR",
+	[INVALID_CHAR_ERROR] = "INVALID_CHAR_ERROR",
 	};
 
 	ft_putendl_fd(error_texts[get_error()], STDERR_FILENO);

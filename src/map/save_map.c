@@ -6,11 +6,11 @@
 /*   By: mforstho <mforstho@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/09 15:40:01 by mforstho      #+#    #+#                 */
-/*   Updated: 2022/08/31 18:43:19 by mforstho      ########   odam.nl         */
+/*   Updated: 2022/09/05 14:31:20 by mforstho      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../so_long.h"
+#include "so_long.h"
 
 t_status	save_map(int map, t_data *data)
 {

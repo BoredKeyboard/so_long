@@ -6,11 +6,11 @@
 /*   By: mforstho <mforstho@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/23 14:13:41 by mforstho      #+#    #+#                 */
-/*   Updated: 2022/08/31 18:41:14 by mforstho      ########   odam.nl         */
+/*   Updated: 2022/09/05 14:30:37 by mforstho      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../so_long.h"
+#include "so_long.h"
 
 static int	horizontal_edge(char *map_line, size_t line_length)
 {

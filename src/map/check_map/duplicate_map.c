@@ -1,37 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   initialize_entity_data.c                           :+:    :+:            */
+/*   duplicate_map.c                                    :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mforstho <mforstho@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/08/31 14:39:56 by mforstho      #+#    #+#                 */
-/*   Updated: 2022/09/05 14:30:25 by mforstho      ########   odam.nl         */
+/*   Created: 2022/09/05 14:25:51 by mforstho      #+#    #+#                 */
+/*   Updated: 2022/09/05 14:26:02 by mforstho      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-void	initialize_entity_data(char **map_array, t_data *data)
+char	**duplicate_map(char **arr, int rows)
 {
 	int		y;
-	size_t	x;
+	char	**map_array;
 
+	map_array = malloc(((size_t)rows + 1) * sizeof(char *));
+	if (map_array == NULL)
+		return (NULL);
 	y = 0;
-	while (map_array[y] != NULL)
+	while (arr[y] != NULL)
 	{
-		x = 0;
-		while (map_array[y][x] != '\0')
+		map_array[y] = strdup(arr[y]);
+		if (map_array[y] == NULL)
 		{
-			if (map_array[y][x] == 'P')
-			{
-				data->player.x = (int)x;
-				data->player.y = y;
-			}
-			if (map_array[y][x] == 'C')
-				data->collectible.total++;
-			x++;
+			free_map_array(map_array);
+			return (NULL);
 		}
 		y++;
 	}
+	map_array[y] = NULL;
+	return (map_array);
 }

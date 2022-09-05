@@ -6,13 +6,13 @@
 /*   By: mforstho <mforstho@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/23 15:59:23 by mforstho      #+#    #+#                 */
-/*   Updated: 2022/08/24 15:42:59 by mforstho      ########   odam.nl         */
+/*   Updated: 2022/09/05 14:30:43 by mforstho      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../so_long.h"
+#include "so_long.h"
 
-static void	add_entities(char *map_line, size_t line_length, int *entity_array)
+t_status	add_entities(char *map_line, size_t line_length, int *entity_array)
 {
 	size_t	i;
 
@@ -21,12 +21,19 @@ static void	add_entities(char *map_line, size_t line_length, int *entity_array)
 	{
 		if (map_line[i] == 'E')
 			entity_array[0]++;
-		if (map_line[i] == 'C')
+		else if (map_line[i] == 'C')
 			entity_array[1]++;
-		if (map_line[i] == 'P')
+		else if (map_line[i] == 'P')
 			entity_array[2]++;
+		else if (map_line[i] != '0' && map_line[i] != '1')
+		{
+			printf("character: %c\n", map_line[i]);
+			entity_array[0] = -1;
+			return (set_error(INVALID_CHAR_ERROR));
+		}
 		i++;
 	}
+	return (OK);
 }
 
 t_status	check_map_entities(t_data *data)
@@ -44,7 +51,8 @@ t_status	check_map_entities(t_data *data)
 	while (map_lines != NULL)
 	{
 		map_line = map_lines->content;
-		add_entities(map_line, line_length, entity_array);
+		if (add_entities(map_line, line_length, entity_array) != OK)
+			return (ERROR);
 		if (map_lines->next == NULL)
 			break ;
 		map_lines = map_lines->next;

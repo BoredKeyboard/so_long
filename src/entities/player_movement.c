@@ -6,11 +6,11 @@
 /*   By: mforstho <mforstho@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/30 13:30:12 by mforstho      #+#    #+#                 */
-/*   Updated: 2022/08/31 18:33:22 by mforstho      ########   odam.nl         */
+/*   Updated: 2022/09/05 14:30:29 by mforstho      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../so_long.h"
+#include "so_long.h"
 
 void	move_player_up(t_player *player)
 {

@@ -6,11 +6,11 @@
 /*   By: mforstho <mforstho@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/31 14:41:03 by mforstho      #+#    #+#                 */
-/*   Updated: 2022/08/31 14:41:10 by mforstho      ########   odam.nl         */
+/*   Updated: 2022/09/05 14:30:11 by mforstho      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../so_long.h"
+#include "so_long.h"
 
 void	collectible_pickup(t_data *data)
 {
