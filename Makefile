@@ -6,16 +6,13 @@
 #    By: mforstho <mforstho@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/10/12 16:16:58 by mforstho      #+#    #+#                  #
-#    Updated: 2022/09/05 14:39:30 by mforstho      ########   odam.nl          #
+#    Updated: 2022/09/06 12:10:17 by mforstho      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
-
-# gcc main.c -I include -L MLX42 -l mlx42 -l glfw3 -framework Cocoa -framework OpenGL -framework IOKit
 
 NAME := so_long
 CC := gcc
 CFLAGS ?= -Wextra -Wall -Werror
-CFLAGS += -g -fsanitize=address
 
 SOURCES :=									\
 	src/entities/collectible_pickup.c		\
